@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.livres.repos.RoleRepository;
 import com.example.livres.repos.UserRepository;
 import com.example.livres.service.UserService;
 import com.example.livres.entities.Role;
@@ -23,6 +24,9 @@ public class UserRestController {
 	
 	@Autowired
 	UserRepository userRep;
+	
+	@Autowired
+	RoleRepository roleRep;
 	@Autowired
 	UserService userService;
 	
@@ -31,6 +35,10 @@ public class UserRestController {
 		return userRep.findAll();
 	 }
 	
+	@RequestMapping(value = "/users/roles",method = RequestMethod.GET)
+	public List<Role> getAllRoles() {
+		return roleRep.findAll();
+	 }
 	
 
 	@RequestMapping(value = "/users/{id}" ,method = RequestMethod.GET)
@@ -51,42 +59,13 @@ public class UserRestController {
 		
 		
 		
-		//ajouter le user
-			User newU  = userService.saveUser(new User(null,u.getUsername(),u.getPassword(),true,null));
-			
-			//ajouter les rôles au user	
-		
-		
-			if (u.getRoles() != null) {
-		        for (Role r : u.getRoles()) {
-		            newU = userService.addRoleToUser(newU.getUsername(), r.getRole());
-		        }
-		    }
-		
-		
-		
-		return newU;
+	return userService.saveUser(u);
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.PUT)
 	public User updateUser(@RequestBody User u) {
 
-		//ajouter le user
-		User newU  = userService.updateUser(new User(u.getUser_id(),u.getUsername(),u.getPassword(),true,null));
-		
-		//ajouter les rôles au user	
-	
-	     newU.setRoles(null);
-		if (u.getRoles() != null) {
-			
-	        for (Role r : u.getRoles()) {
-	            newU = userService.addRoleToUser(newU.getUsername(), r.getRole());
-	        }
-	    }
-	
-	
-	
-	return newU;
+		return userService.updateUser(u);
 		
 		
 	}
@@ -102,23 +81,7 @@ public class UserRestController {
 	@RequestMapping(value = "/users/register",method = RequestMethod.POST)
 	public User registerUser(@RequestBody User u) {
 		
-		System.out.println("register");
-		
-		//ajouter le user
-			User newU  = userService.saveUser(new User(null,u.getUsername(),u.getPassword(),true,null));
-			
-			//ajouter les rôles au user	
-		
-		
-			//if (u.getRoles() != null) {
-		      //  for (Role r : u.getRoles()) {
-		            newU = userService.addRoleToUser(newU.getUsername(), "USER");
-		      //  }
-		   // }
-		
-		
-		
-		return newU;
+	   return userService.registerUser(u);
 	}
 	
 	
@@ -138,6 +101,13 @@ public class UserRestController {
 		
 		
 	}
+	
+	@RequestMapping(value = "/users/verifEmail/{email}/{code}" ,method = RequestMethod.GET)
+	public User verifEmail(@PathVariable("email") String email,@PathVariable("code") String code) {
+	return userService.verifEmail(email, code);
+	 }
+	
+	
 	
 	
 	

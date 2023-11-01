@@ -27,6 +27,9 @@ public class User {
 @GeneratedValue (strategy=GenerationType.IDENTITY)
 private Long user_id;
 private String username;
+private String email;
+private String code;
+private boolean emailConfirmed;
 private String password;
 private Boolean enabled;
  @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)

@@ -43,9 +43,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     
     
     @Override
-    public UserDetails loadUserByUsername(String userName) throws
+    public UserDetails loadUserByUsername(String email) throws
     UsernameNotFoundException {
-    	User user = userRepo.findByUsername(userName);
+    	User user = userRepo.findByEmail(email).get();
     	if (user==null)
     	 throw new UsernameNotFoundException("Utilisateur introuvable !");
     	

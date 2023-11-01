@@ -57,8 +57,12 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(req ->
-                        req .requestMatchers("/login").permitAll() .requestMatchers("/login")
+                        req .requestMatchers("/login").permitAll() 
+                        .requestMatchers("/Userapi/users/register")
                                 .permitAll()
+                                .requestMatchers("/Userapi/users/verifEmail/**")
+                                .permitAll()
+                                .requestMatchers("/error").permitAll()
                                   .anyRequest()
                                 .authenticated()
                 )
