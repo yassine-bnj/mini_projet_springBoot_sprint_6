@@ -29,6 +29,8 @@ RoleRepository roleRep;
 
 @Autowired
 BCryptPasswordEncoder bCryptPasswordEncoder;
+@Autowired
+EmailSender es;
 
 @Override
 public User saveUser(User user) {
@@ -214,7 +216,7 @@ public User registerUser(User u) {
 	            
 	           
 	
-	  EmailSender es = new EmailSender();
+	 
 	  
 	  String email =""
 	  		+ "\n"

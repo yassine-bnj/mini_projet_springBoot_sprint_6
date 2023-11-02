@@ -19,9 +19,9 @@ import java.util.Properties;
 @Service
 public class EmailSender {
 
+	
 	@Value("${spring.mail.host}")
-    private String smtpHost;
-
+	private String smtpHost;
     @Value("${spring.mail.port}")
     private String smtpPort;
 
@@ -41,9 +41,9 @@ public class EmailSender {
 		   // SMTP server configuration
 	        Properties properties = new Properties();
 	        
-	       
+	       System.out.println(smtpHost);
 	        
-	        properties.put("mail.smtp.host", "smtp.gmail.com");
+	        properties.put("mail.smtp.host", smtpHost);
 	        properties.put("mail.smtp.port", "587");
 	        properties.put("mail.smtp.starttls.enable", "true");
 	        properties.put("mail.smtp.auth", "true");

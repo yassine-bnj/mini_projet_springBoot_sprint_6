@@ -13,6 +13,7 @@ import com.example.livres.repos.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -45,18 +46,24 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws
     UsernameNotFoundException {
-    	User user = userRepo.findByEmail(email).get();
-    	if (user==null)
+    	System.out.println(email);
+    	Optional<User> user = userRepo.findByEmail(email);
+    	System.out.println(user);
+    	if (!user.isPresent())
+    		{user = userRepo.findByUsername(email);
+    		}
+    	
+    	if (!user.isPresent())
     	 throw new UsernameNotFoundException("Utilisateur introuvable !");
     	
     	List<GrantedAuthority> auths = new ArrayList<>();
     	
-    	auths = user.getRoles().stream().map((role) -> new SimpleGrantedAuthority(role.getRole()))
+    	auths = user.get().getRoles().stream().map((role) -> new SimpleGrantedAuthority(role.getRole()))
         .collect(Collectors.toList());
     	
     	
     	
-    		 for(Role R : user.getRoles()) {
+    		 for(Role R : user.get().getRoles()) {
     			 System.out.println("role == "+ R);
     			 GrantedAuthority auhority = new SimpleGrantedAuthority(R.getRole());
     			 auths.add(auhority);
@@ -67,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     	
     	
     	return new org.springframework.security.core.
-    	userdetails.User(user.getUsername(),user.getPassword(),auths);
+    	userdetails.User(user.get().getUsername(),user.get().getPassword(),auths);
     	 }
     
     
